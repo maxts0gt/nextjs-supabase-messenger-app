@@ -2,12 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import styles from '../styles/Chat.module.css';
 
 const Chat = ({ currentUser, session, supabase }) => {
-	if (!currentUser) return null;
 	const [messages, setMessages] = useState([]);
 	const [editingUsername, setEditingUsername] = useState(false);
 	const [users, setUsers] = useState({});
 	const message = useRef('');
 	const newUsername = useRef(currentUser.username);
+	// if (!currentUser) return null;
 
 	useEffect(async () => {
 		const getMessages = async () => {
