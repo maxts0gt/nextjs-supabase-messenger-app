@@ -6,7 +6,6 @@ body {
 		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 .background {
-	background-image: url('../public/Background.png');
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-position: center;

@@ -1,11 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from '../styles/Chat.module.css';
 
-const Chat = ({ session, supabase }) => {
+const Chat = ({ currentUser, session, supabase }) => {
 	// console.log(supabase);
 
+	if (!currentUser) return null;
+
 	const [messages, setMessages] = useState([]);
+	const [editingUsername, setEditingUsername] = useState(false);
 	const message = useRef('');
+	const newUsername = useRef('');
 
 	useEffect(async () => {
 		const getMessages = async () => {
@@ -42,21 +46,37 @@ const Chat = ({ session, supabase }) => {
 		message.current.value = '';
 	};
 
+	const logout = (evt) => {
+		evt.preventDefault();
+		window.localStorage.clear();
+		window.location.reload();
+	};
+
+	const setUsername = async (evt) => {
+		evt.preventDefault();
+		const username = newUsername.current.value;
+		await supabase
+			.from('user')
+			.insert([{ ...currentUser, username }], { upsert: true });
+		newUsername.current.value = '';
+		setEditingUsername(false);
+	};
+
 	return (
 		<>
 			<div className={styles.header}>
 				<div className={styles.headerText}>
 					<h1>Supabase Chat</h1>
 					<p className={styles.headerUser}>
-						{/* Welcome,{' '}
+						Welcome,{' '}
 						{currentUser.username
 							? currentUser.username
-							: session.user.email} */}
+							: session.user.email}
 					</p>
 				</div>
 
 				<div className={styles.settings}>
-					{/* {editingUsername ? (
+					{editingUsername ? (
 						<form onSubmit={setUsername}>
 							<input
 								className={styles.updateUser}
@@ -83,7 +103,7 @@ const Chat = ({ session, supabase }) => {
 								logout
 							</button>
 						</div>
-					)} */}
+					)}
 				</div>
 			</div>
 			<div className={styles.container}>

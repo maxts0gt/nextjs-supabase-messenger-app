@@ -4,7 +4,7 @@ import Auth from '../components/Auth';
 import Chat from '../components/Chat';
 import { useEffect, useState } from 'react';
 
-export default function Home({ session, supabase }) {
+export default function Home({ currentUser, session, supabase }) {
 	const [loggedIn, setLoggedIn] = useState(false);
 
 	useEffect(() => {
@@ -19,7 +19,11 @@ export default function Home({ session, supabase }) {
 
 			<main className={styles.main}>
 				{loggedIn ? (
-					<Chat session={session} supabase={supabase} />
+					<Chat
+						currentUser={currentUser}
+						session={session}
+						supabase={supabase}
+					/>
 				) : (
 					<Auth supabase={supabase} />
 				)}
