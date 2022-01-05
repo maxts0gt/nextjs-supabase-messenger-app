@@ -9,14 +9,14 @@ const Chat = ({ currentUser, session, supabase }) => {
 	const newUsername = useRef(currentUser.username);
 	// if (!currentUser) return null;
 
-	useEffect(async () => {
+	useEffect(() => {
 		const getMessages = async () => {
 			let { data: messages, error } = await supabase
 				.from('message')
 				.select('*');
 			setMessages(messages);
 		};
-		await getMessages();
+		getMessages();
 		const setupMessagesSubscription = async () => {
 			await supabase
 				.from('message')
@@ -25,7 +25,7 @@ const Chat = ({ currentUser, session, supabase }) => {
 				})
 				.subscribe();
 		};
-		await setupMessagesSubscription();
+		setupMessagesSubscription();
 		const setupUserSubscription = async () => {
 			await supabase
 				.from('user')
@@ -43,7 +43,7 @@ const Chat = ({ currentUser, session, supabase }) => {
 				})
 				.subscribe();
 		};
-		await setupUserSubscription();
+		setupUserSubscription();
 	}, []);
 
 	const sendMessage = async (evt) => {

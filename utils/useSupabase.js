@@ -24,7 +24,7 @@ const useSupabase = () => {
 
 				if (currentUser.length) {
 					const foundUser = currentUser[0];
-					await supabase
+					supabase
 						.from(`user:id=eq.${foundUser.id}`)
 						.on('UPDATE', (payload) => {
 							setCurrentUser(payload.new);
