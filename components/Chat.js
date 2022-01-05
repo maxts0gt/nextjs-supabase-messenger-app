@@ -1,28 +1,22 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from '../styles/Chat.module.css';
 
 const Chat = ({ currentUser, session, supabase }) => {
-	// console.log(supabase);
-
 	if (!currentUser) return null;
-
 	const [messages, setMessages] = useState([]);
 	const [editingUsername, setEditingUsername] = useState(false);
 	const [users, setUsers] = useState({});
 	const message = useRef('');
-	const newUsername = useRef('');
+	const newUsername = useRef(currentUser.username);
 
 	useEffect(async () => {
 		const getMessages = async () => {
 			let { data: messages, error } = await supabase
 				.from('message')
 				.select('*');
-
 			setMessages(messages);
 		};
-
 		await getMessages();
-
 		const setupMessagesSubscription = async () => {
 			await supabase
 				.from('message')
@@ -59,16 +53,14 @@ const Chat = ({ currentUser, session, supabase }) => {
 		await supabase
 			.from('message')
 			.insert([{ content, user_id: session.user.id }]);
-
 		message.current.value = '';
 	};
-
 	const logout = (evt) => {
 		evt.preventDefault();
 		window.localStorage.clear();
 		window.location.reload();
+		// supabase.auth.signOut();
 	};
-
 	const setUsername = async (evt) => {
 		evt.preventDefault();
 		const username = newUsername.current.value;
@@ -94,6 +86,7 @@ const Chat = ({ currentUser, session, supabase }) => {
 		return Object.assign({}, users, newUsers);
 	};
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	useEffect(async () => {
 		const getUsers = async () => {
 			const userIds = new Set(messages.map((message) => message.user_id));
@@ -108,7 +101,6 @@ const Chat = ({ currentUser, session, supabase }) => {
 		if (!user) return '';
 		return user.username ? user.username : user.id;
 	};
-
 	return (
 		<>
 			<div className={styles.header}>
@@ -183,5 +175,4 @@ const Chat = ({ currentUser, session, supabase }) => {
 		</>
 	);
 };
-
 export default Chat;
