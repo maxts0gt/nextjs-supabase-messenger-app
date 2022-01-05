@@ -2,7 +2,7 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Auth from '../components/Auth';
 import Chat from '../components/Chat';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Home({ currentUser, session, supabase }) {
 	const [loggedIn, setLoggedIn] = useState(false);

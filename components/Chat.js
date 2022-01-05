@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Chat.module.css';
 
 const Chat = ({ currentUser, session, supabase }) => {
