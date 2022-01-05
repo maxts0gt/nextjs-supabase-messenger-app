@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import styles from '../styles/Chat.module.css';
 
 const Chat = ({ session, supabase }) => {
 	// console.log(supabase);
@@ -42,19 +43,77 @@ const Chat = ({ session, supabase }) => {
 	};
 
 	return (
-		<div>
-			{messages.map((message) => (
-				<div key={message.id}>{message.content}</div>
-			))}
-			<form onSubmit={sendMessage}>
+		<>
+			<div className={styles.header}>
+				<div className={styles.headerText}>
+					<h1>Supabase Chat</h1>
+					<p className={styles.headerUser}>
+						{/* Welcome,{' '}
+						{currentUser.username
+							? currentUser.username
+							: session.user.email} */}
+					</p>
+				</div>
+
+				<div className={styles.settings}>
+					{/* {editingUsername ? (
+						<form onSubmit={setUsername}>
+							<input
+								className={styles.updateUser}
+								placeholder='New Username'
+								required
+								ref={newUsername}
+							></input>
+							<button className={styles.btnnn} type='submit'>
+								Update
+							</button>
+						</form>
+					) : (
+						<div>
+							<button
+								className={styles.btn}
+								onClick={() => setEditingUsername(true)}
+							>
+								Edit username
+							</button>
+							<button
+								className={styles.btnn}
+								onClick={(evt) => logout(evt)}
+							>
+								logout
+							</button>
+						</div>
+					)} */}
+				</div>
+			</div>
+			<div className={styles.container}>
+				{messages.map((message) => (
+					<div key={message.id} className={styles.messageContainer}>
+						{/* <span className={styles.user}>
+							{username(message.user_id)}
+						</span> */}
+						<div>{message.content}</div>
+					</div>
+				))}
+			</div>
+
+			<form className={styles.chat} onSubmit={sendMessage}>
 				<input
-					placeholder='Write your message'
+					className={styles.messageInput}
 					required
+					type='text'
+					placeholder='Write your message'
 					ref={message}
 				/>
-				<button type='submit'>Sendd message</button>
+				<button className={styles.submit} type='submit'>
+					Send Message
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+				</button>
 			</form>
-		</div>
+		</>
 	);
 };
 

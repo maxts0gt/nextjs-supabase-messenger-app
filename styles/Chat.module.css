@@ -1,0 +1,57 @@
+.header {
+	top: 0;
+	position: fixed;
+	background: #1d1f20;
+	height: 130px;
+	width: 100%;
+	padding: 10px;
+	display: flex;
+}
+
+.headerText {
+	flex: 1;
+	margin-right: 15px;
+	margin-bottom: 15px;
+	color: #23d5ab;
+	font-family: 'Aclonica', sans-serif;
+}
+
+.container {
+	width: 600px;
+	margin-right: 10px;
+	flex-direction: column;
+	padding: 1rem;
+	margin: 120px 0 1px 0;
+}
+.messageContainer {
+	font-family: 'Chela One', cursive;
+	border: 2px solid #dedede;
+	border-radius: 5px;
+	padding: 10px;
+	margin: 10px 0;
+	width: auto;
+}
+
+.chat {
+	bottom: 0;
+	display: flex;
+	background: #1d1f20;
+	width: 100%;
+	padding: 5px;
+	height: 60px;
+	justify-content: space-between;
+}
+
+.messageInput {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 50px;
+	color: white;
+	font-size: 25px;
+	background-color: #1d1f20;
+	margin-right: 10px;
+	border: 1px solid #eee;
+	border-radius: 2px;
+	padding: 0 10px;
+}

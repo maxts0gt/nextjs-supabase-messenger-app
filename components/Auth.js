@@ -1,14 +1,19 @@
-const Auth = ({ supabase }) => {
-	const signInWithGithub = async () => {
-		supabase.auth.signIn({
-			provider: 'github',
-		});
-	};
+import styles from '../styles/Auth.module.css';
 
+const Auth = ({ supabase }) => {
+	const signInWithGithub = () => {
+		supabase.auth.signIn({ provider: 'github' });
+	};
 	return (
-		<div>
-			<button onClick={signInWithGithub}>Log in with Github</button>
-		</div>
+		<>
+			<div className='background'></div>
+			<p>
+				<button className={styles.github} onClick={signInWithGithub}>
+					{' '}
+					Login with Github
+				</button>
+			</p>
+		</>
 	);
 };
 
