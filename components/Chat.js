@@ -8,6 +8,7 @@ const Chat = ({ currentUser, session, supabase }) => {
 
 	const [messages, setMessages] = useState([]);
 	const [editingUsername, setEditingUsername] = useState(false);
+	const [users, setUsers] = useState({});
 	const message = useRef('');
 	const newUsername = useRef('');
 
@@ -22,17 +23,33 @@ const Chat = ({ currentUser, session, supabase }) => {
 
 		await getMessages();
 
-		const setUpMessageSubscription = async () => {
+		const setupMessagesSubscription = async () => {
 			await supabase
 				.from('message')
 				.on('INSERT', (payload) => {
-					console.log('Change received!', payload);
 					setMessages((previous) => [].concat(previous, payload.new));
 				})
 				.subscribe();
 		};
-
-		await setUpMessageSubscription();
+		await setupMessagesSubscription();
+		const setupUserSubscription = async () => {
+			await supabase
+				.from('user')
+				.on('UPDATE', (payload) => {
+					setUsers((users) => {
+						const user = users[payload.new.id];
+						if (user) {
+							return Object.assign({}, users, {
+								[payload.new.id]: payload.new,
+							});
+						} else {
+							return users;
+						}
+					});
+				})
+				.subscribe();
+		};
+		await setupUserSubscription();
 	}, []);
 
 	const sendMessage = async (evt) => {
@@ -86,6 +103,12 @@ const Chat = ({ currentUser, session, supabase }) => {
 		await getUsers();
 	}, [messages]);
 
+	const username = (user_id) => {
+		const user = users[user_id];
+		if (!user) return '';
+		return user.username ? user.username : user.id;
+	};
+
 	return (
 		<>
 			<div className={styles.header}>
@@ -133,9 +156,9 @@ const Chat = ({ currentUser, session, supabase }) => {
 			<div className={styles.container}>
 				{messages.map((message) => (
 					<div key={message.id} className={styles.messageContainer}>
-						{/* <span className={styles.user}>
+						<span className={styles.user}>
 							{username(message.user_id)}
-						</span> */}
+						</span>
 						<div>{message.content}</div>
 					</div>
 				))}
