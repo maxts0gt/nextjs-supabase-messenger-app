@@ -62,6 +62,30 @@ const Chat = ({ currentUser, session, supabase }) => {
 		setEditingUsername(false);
 	};
 
+	const getUsersFromSupabase = async (users, userIds) => {
+		const usersToGet = Array.from(userIds).filter(
+			(userIds) => !users[userIds]
+		);
+		if (Object.keys(users).length && usersToGet.length == 0) return users;
+
+		const { data } = await supabase
+			.from('user')
+			.select('id, username')
+			.in('id', usersToGet);
+		const newUsers = {};
+		data.forEach((user) => (newUsers[user.id] = user));
+		return Object.assign({}, users, newUsers);
+	};
+
+	useEffect(async () => {
+		const getUsers = async () => {
+			const userIds = new Set(messages.map((message) => message.user_id));
+			const newUsers = await getUsersFromSupabase(users, userIds);
+			setUsers(newUsers);
+		};
+		await getUsers();
+	}, [messages]);
+
 	return (
 		<>
 			<div className={styles.header}>
